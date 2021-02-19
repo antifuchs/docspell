@@ -1,16 +1,18 @@
-cfg: {stdenv, fetchzip, file, curl, inotifyTools, fetchurl, jdk11, bash, jq, sqlite}:
+cfgClosure: { lib, stdenv, fetchzip, file, curl, inotifyTools, fetchurl, jdk11, bash, jq, sqlite, callPackage }:
 let
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Docspell helps to organize and archive your paper documents.";
     homepage = https://github.com/eikek/docspell;
     license = licenses.gpl3;
     maintainers = [ maintainers.eikek ];
   };
+  cfg = callPackage cfgClosure { };
 in
-{ server = stdenv.mkDerivation rec {
+{
+  server = stdenv.mkDerivation rec {
     name = "docspell-server-${cfg.version}";
 
-    src = fetchzip cfg.server;
+    src = cfg.server;
 
     buildInputs = [ jdk11 ];
 
@@ -32,7 +34,7 @@ in
   joex = stdenv.mkDerivation rec {
     name = "docspell-joex-${cfg.version}";
 
-    src = fetchzip cfg.joex;
+    src = cfg.joex;
 
     buildInputs = [ jdk11 ];
 
@@ -54,7 +56,7 @@ in
   tools = stdenv.mkDerivation {
     name = "docspell-tools-${cfg.version}";
 
-    src = fetchzip cfg.tools;
+    src = cfg.tools;
 
     buildPhase = "true";
 
