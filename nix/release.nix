@@ -302,7 +302,21 @@ rec {
     };
   };
   pkg = v: import ./pkg.nix v;
-  currentPkg = pkg cfg.v0_19_0;
+  currentPkg =
+    let
+      src = { pkgs }:
+        let
+          built = (pkgs.callPackage ./src.nix { });
+        in
+        {
+          version = "0.20.0-dev";
+          server = "${built}/restserver.zip";
+          joex = "${built}/joex.zip";
+          tools = "${built}/tools.zip";
+        };
+    in
+    pkg src;
+  latestPkg = pkg cfg.v0_19_0;
   module-joex = ./module-joex.nix;
   module-restserver = ./module-server.nix;
   module-consumedir = ./module-consumedir.nix;
