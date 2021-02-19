@@ -16,3 +16,4 @@ _site/
 /website/site/templates/shortcodes/joex.conf
 /docker/docs
 /docker/dev-log
+/flake.lock
