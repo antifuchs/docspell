@@ -21,6 +21,7 @@
       ];
 
       apps = {
+        # This is for debugging only. Please don't rely on this in external systems.
         repl =
           flake-utils.lib.mkApp {
             drv = pkgs.writeShellScriptBin "repl" ''
